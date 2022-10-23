@@ -22,7 +22,7 @@ function felizSemana() {
         case 6:
             document.getElementById("sabado").style.display = "block";
             break;
-        case 7:
+        case 0:
             document.getElementById("domingo").style.display = "block";
             break;
         default:
