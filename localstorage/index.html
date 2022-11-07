@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="showLocalStorage()">
+    <input type="text" placeholder="Escrive" id="texto">
+    <button onclick="saveData()">Guarda</button>
+    <button onclick="removeLocalStorage()">Remove All</button>
+
+    <ul id="llistahtml">
+    </ul>
+</body>
+<script>
+
+    function saveData() {
+        //Guarda el valor del text en una variable
+        let inputtext = document.getElementById("texto").value;
+        //Guarda la variable text en el localstorage amb key 'nom-'+1,2,4,5 ...
+        localStorage.setItem("nom-" + increaseLocalId(), inputtext);
+        //Pinta per pantalla una llista de tots el localStorage items que contenen la paraula 'nom'
+        showLocalStorage();
+    }
+
+
+    function increaseLocalId() {
+        //En cas de no existir la key 'count', la crea amb valor '1'
+        if (localStorage.getItem("count") == null || localStorage.getItem("count") == NaN||localStorage.getItem("count") == "0") {
+            localStorage.setItem("count", '1');
+            return '1';
+        }
+        //Incrementa la key +1
+        let localid = localStorage.getItem("count");
+        localStorage.setItem("count", (parseInt(localid) + 1).valueOf());
+        return localStorage.getItem("count");
+
+    }
+    function showLocalStorage() {
+        let getListHTML = document.getElementById("llistahtml");
+        //Esborra la llista anterior
+        while (getListHTML.firstChild) {
+            getListHTML.removeChild(getListHTML.firstChild);
+        }
+        //Crea una llista pero nomes al les keys que contenen la paraula 'nom'
+        for (let i = 0; i < localStorage.length; i++) {
+            let nomKey = localStorage.key(i);
+            if (nomKey.includes("nom")) {
+                let li = document.createElement('li');
+                //Guardem el value de la key, NO LA KEY 
+                li.innerText =  nomKey + ": " + localStorage.getItem(nomKey);
+                //Guarda el fill a <ul> 'fill' <ul>
+                getListHTML.appendChild(li);
+            }
+        }
+    }
+
+    function removeLocalStorage() {
+        //Esborra tots els keys creats que contiguin 'nom'
+        for (let i = 0; i < localStorage.length; i++) {
+            let nomKey = localStorage.key(i);
+            if (nomKey.includes("nom")) {
+                localStorage.removeItem(nomKey);
+            }
+        }
+        //Reseteja el contador
+        localStorage.setItem("count", "0");
+        //Mostra de nou la llista
+        showLocalStorage();
+    }
+</script>
+
+</html>
